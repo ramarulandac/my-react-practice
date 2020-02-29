@@ -6,12 +6,11 @@ export default class PostList extends Component {
         super(props);
     }
    
-
-   render() {
+     render() {
     const anuncios = this.props.anuncios
     return (
-         (anuncios)? anuncios.map(post => { return  <div>
-                                                    <Link to={post._id}><img src={`${post.photo}`} alt={post.description}/> {post.description}</Link>
+         (anuncios)? anuncios.map(post => { return  <div key = {post._id} className="post">
+                                                    <Link to={`/anuncios/${post._id}`}><img src={`${post.photo}`} alt={post.description} className="img-rounded"/> {post.description}</Link>
                                                     </div>}):null 
     )
    }

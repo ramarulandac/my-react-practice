@@ -1,7 +1,7 @@
 const URL = ' http://34.89.93.186:8080/apiv1'
 
 
-
+     
 
 export const signUp = async(username, password) => {
     
@@ -55,9 +55,18 @@ export const Start = async (username,password) => {
 }
 
 
-export const getPosts = async (filters) => {
+export const getPosts = async (params) => {
 
-    const pathQuery = filters.map((filter,y) =>  { return  (y===0)?`${filter.name.toLowerCase()}=${filter.value}`:`&${filter.name.toLowerCase()}=${filter.value}`}).join('')
+    const queryparams = Object.keys(params)
+    console.log(params)
+    console.log(queryparams)
+    
+    const pathQuery = queryparams.filter(element => (params[element]!==''))
+                                            .map((filter,y) =>  { return (y===0)?
+                                                        `${filter.toLowerCase()}=${params[filter]}`:
+                                                        `&${filter.toLowerCase()}=${params[filter]}`})
+                                    .join('')
+
     console.log(pathQuery)
     try {
         const endpoint = `${URL}/anuncios?${pathQuery}`;

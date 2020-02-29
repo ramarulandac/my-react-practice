@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Link, Redirect} from "react-router-dom";
-import { Start } from '../API/api'
+import { Start } from '../Services/api'
 
 
 
@@ -12,7 +12,7 @@ class Login extends Component {
          username: '',
          password: '',
          error:true,
-         loggedIn:false,
+         loggedIn:true,
          alert:false   
         };
     }
@@ -27,8 +27,7 @@ class Login extends Component {
     }
 
     handleSubmit = async (evt) => {
-        evt.preventDefault()
-        console.log(this.state.username + this.state.password)
+        evt.preventDefault()        
         
         const {username, password} = this.state
         const response = await Start(username, password)
@@ -42,7 +41,9 @@ class Login extends Component {
             this.setState({
                 registered:false,
                 error: response.error,
-                alert:true})        
+                alert:true,
+                loggedIn:false
+            })        
         }
     }
 

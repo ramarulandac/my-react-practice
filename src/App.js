@@ -1,9 +1,9 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Login from './Auth/Login'
 import Signup from './Auth/SignUp'
 import Posts from './Posts/Posts'
+import PostDetail from './Posts/PostDetail'
 import {BrowserRouter as Router, Switch,Route,Link, Redirect} from "react-router-dom";
 
 function App() {
@@ -16,7 +16,9 @@ function App() {
            <Switch>
              <Route path="/login" component={Login} />
              <Route path="/signup" component={Signup} />
+             <Route path="/anuncios/:anuncio" component={PostDetail}/>
              <Route path="/anuncios" component={Posts}/>
+           
              <Redirect to="/login"/>
            </Switch>
         </Router>

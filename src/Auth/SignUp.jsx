@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {BrowserRouter as Router, Switch,Route,Link, Redirect} from "react-router-dom";
-import {signUp} from '../API/api'
+import {signUp} from '../Services/api'
 
 class SignUp extends Component {
     constructor(props){

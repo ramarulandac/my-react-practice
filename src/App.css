@@ -32,6 +32,9 @@
    color:red;
  }
 
+a img {
+  width: 100px;
+}
 
 @keyframes App-logo-spin {
   from {

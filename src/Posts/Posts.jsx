@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Link, Redirect} from "react-router-dom";
-import { getPosts} from '../API/api'
+import {getPosts} from '../Services/api'
 import PostList from './PostList'
 
 export default class Posts extends Component {
@@ -8,10 +8,15 @@ export default class Posts extends Component {
         super(props);
         this.state = {
             posts: [],
-            filters:[],
-            filter:null,
+            queryFilters:[],
+            filters:{
+                    name:'',
+                    price:0,
+                    tag:'',
+                    venta:true                    
+                },
             value:null,
-            flag:0
+            reset:0            
         }           
     }
 
@@ -19,64 +24,56 @@ export default class Posts extends Component {
         const filters = this.state.filters
         evt.preventDefault();
         const posts = await getPosts(filters);
-
-        
+        console.log(posts)
         this.setState({
-          posts:posts
+          posts:posts.results
         })
     }
 
     handleInput = (evt) => {      
         const value = evt.target.value
-        const name = evt.target.name
+       
+        const name = evt.target.name;      
         this.setState({
-            [name]:value
+            filters: {...this.state.filters, [name]:value}
         })
     }
 
     handleAdd = (evt) => {
       
         const queryFilter = this.state.filters;
-        const {filter, value, flag} = this.state
-       
-        queryFilter.push({name:filter, value:value})      
+        const {reset} = this.state
 
         this.setState({
             filters:queryFilter,                      
-            flag:flag + 1,
+            reset:reset + 1,
         })
     }
 
     render(){
-        const {flag,filters,posts } = this.state
+        const {reset,filters,posts } = this.state
         return (<div>
             <h1>Articles For Sale</h1>
-            <div key={flag}>
+            <div key={reset}>
                 <form onSubmit={this.handleSubmit}>
-                    
-                        <ul>{filters.map((par,y) =>{ 
-                            return <li key={y}>
-                                    {y+1}. {par.name} : {par.value}
-                                    </li> })}
-                        </ul>                
-                        <select onChange={this.handleInput} name="filter">
-                        <option value="" selected="selected"></option>
-                            <option value="Name">name</option>
-                            <option value="Price">price</option>
-                            <option value="Tag">tag</option>
-                            <option value="Sale">sale</option>
-                        </select>
-                        <input type="text" name="value" onChange={this.handleInput}/><button onClick={this.handleAdd}>add to search</button>
-                    
+                         <label for="Name">Name&nbsp;</label>
+                         <input type="text" placeholder="article" value={filters.name} name="name" id="Name" onChange={this.handleInput}/><br/>
+                         <label for="Price">Price &nbsp;</label>
+                         <input placeholder="how much would yo pay" value={filters.price} name="price" id="Price" onChange={this.handleInput}/><br/>
+                         <label for="Tag">Tag &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                         <input placeholder="Look for tag" name="tag" id="Tag" onChange={this.handleInput}/><br/>
+                         <label for="Sale">Sale or buy &nbsp;</label> 
+                        <select name="venta" id="Sale" onChange={this.handleInput}>                         
+                            <option value={true} selected="selected">Sale</option>                                                   
+                            <option value={false}>Buy</option>
+                        </select><br/>                     
                     <button type="Submit" value="Submit">Search</button>
                 </form>
             </div> 
             <div className="posts">
-                {(posts.length === 0 )?'':<h3>Found {posts.results.length}</h3> }
-                <PostList anuncios={posts.results}></PostList>
-               
+                {(posts.length === 0 )?'':<h3>Found {posts.length}</h3> }
+                <PostList anuncios={posts}></PostList>
             </div>
-
         </div>
         )
     }
