@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Link, Redirect} from "react-router-dom";
 import {getPosts} from '../Services/api'
 import PostList from './PostList'
+import storage from '../Lib/storage'
 
 export default class Posts extends Component {
     constructor(props){
@@ -13,11 +14,23 @@ export default class Posts extends Component {
                     name:'',
                     price:0,
                     tag:'',
-                    venta:true                    
+                    venta:'sell'                    
                 },
             value:null,
             reset:0            
         }           
+    }
+   
+    componentDidMount= async () => {
+        const filters = this.state.filters
+        const posts  = await getPosts(filters);        
+        if(posts.success){
+            this.setState({
+                posts:posts.results
+            })
+        } else if(!posts.false && posts.error === 'Error: Not logged in' ) {
+           this.props.history.push('/login')
+        }        
     }
 
     handleSubmit = async (evt) => {
@@ -25,28 +38,21 @@ export default class Posts extends Component {
         evt.preventDefault();
         const posts = await getPosts(filters);
         console.log(posts)
-        this.setState({
-          posts:posts.results
-        })
+        if(posts.success){
+            this.setState({
+                posts:posts.results
+            })
+        } else if(!posts.false && posts.error === 'Error: Not logged in' ) {
+           this.props.history.push('/login')
+        }        
     }
 
-    handleInput = (evt) => {      
-        const value = evt.target.value
-       
-        const name = evt.target.name;      
+    handleInput = (evt) => {
+        const value = evt.target.value       
+        const name = evt.target.name;    
+        console.log(name)
         this.setState({
             filters: {...this.state.filters, [name]:value}
-        })
-    }
-
-    handleAdd = (evt) => {
-      
-        const queryFilter = this.state.filters;
-        const {reset} = this.state
-
-        this.setState({
-            filters:queryFilter,                      
-            reset:reset + 1,
         })
     }
 
@@ -58,20 +64,21 @@ export default class Posts extends Component {
                 <form onSubmit={this.handleSubmit}>
                          <label for="Name">Name&nbsp;</label>
                          <input type="text" placeholder="article" value={filters.name} name="name" id="Name" onChange={this.handleInput}/><br/>
-                         <label for="Price">Price &nbsp;</label>
+                         <label type="number" for="Price">Price &nbsp;</label>
                          <input placeholder="how much would yo pay" value={filters.price} name="price" id="Price" onChange={this.handleInput}/><br/>
                          <label for="Tag">Tag &nbsp;&nbsp;&nbsp;&nbsp;</label>
                          <input placeholder="Look for tag" name="tag" id="Tag" onChange={this.handleInput}/><br/>
                          <label for="Sale">Sale or buy &nbsp;</label> 
                         <select name="venta" id="Sale" onChange={this.handleInput}>                         
-                            <option value={true} selected="selected">Sale</option>                                                   
-                            <option value={false}>Buy</option>
+                            <option value='sell' selected="selected">Sale</option>                                                   
+                            <option value='buy'>Buy</option>
                         </select><br/>                     
                     <button type="Submit" value="Submit">Search</button>
-                </form>
+                </form> 
             </div> 
             <div className="posts">
-                {(posts.length === 0 )?'':<h3>Found {posts.length}</h3> }
+                <br/>
+                {(posts.length === 0 )?'':<h4>Found {posts.length}</h4>}
                 <PostList anuncios={posts}></PostList>
             </div>
         </div>

@@ -18,9 +18,9 @@ export const signUp = async(username, password) => {
                                                 },
     });
     
-    const data = await response.json();
-       
-    return data;
+    return await response.json();    
+   
+
 } catch (err) {
     console.log(`Error fetching request..`)
     throw new Error(err);
@@ -44,9 +44,7 @@ export const Start = async (username,password) => {
             credentials:'include'
         })        
         
-        const data = await response.json();
-
-        return data;        
+        return await response.json();        
 
     } catch(err){
         console.log(`Error fetching request..`)
@@ -57,17 +55,15 @@ export const Start = async (username,password) => {
 
 export const getPosts = async (params) => {
 
-    const queryparams = Object.keys(params)
-    console.log(params)
-    console.log(queryparams)
     
+    const queryparams = Object.keys(params)
     const pathQuery = queryparams.filter(element => (params[element]!==''))
                                             .map((filter,y) =>  { return (y===0)?
                                                         `${filter.toLowerCase()}=${params[filter]}`:
                                                         `&${filter.toLowerCase()}=${params[filter]}`})
                                     .join('')
-
-    console.log(pathQuery)
+    
+                                    console.log(pathQuery)
     try {
         const endpoint = `${URL}/anuncios?${pathQuery}`;
         const response = await fetch(endpoint, {
@@ -75,14 +71,61 @@ export const getPosts = async (params) => {
             credentials: 'include'
         })        
         
-        const data = await response.json();
-
-        return data;        
+        return await response.json();      
 
     } catch(err){
         console.log(`Error fetching request..`)
         throw new Error(err);
     }
+}
+
+export const getPost = async (id) => {    
+    
+    try {
+        const endpoint = `${URL}/anuncios/${id}`;
+        const response = await fetch(endpoint, {
+            method:'GET',
+            credentials: 'include'
+        })        
+        
+        return await response.json();      
+
+    } catch(err){
+        console.log(`Error fetching request..`)
+        throw new Error(err);
+    }
+}
+
+     
+
+export const getNew = async(post) => {
+
+    const {name,price,description,venta,foto} = post
+    
+    try {
+        const endpoint = `${URL}/anuncios`;
+        const response = await fetch (endpoint, {
+                                                method: 'POST',
+                                                body: JSON.stringify({
+                                                    'name': name,
+                                                    'price': price,
+                                                    'description':description,
+                                                    'type':venta,
+                                                    'photo':foto
+                                                }),
+                                                headers: {
+                                                    'content-type': 'application/json'
+                                                },
+                                                credentials:'include'
+    });
+    
+    return await response.json();    
+   
+
+} catch (err) {
+    console.log(`Error fetching request..`)
+    throw new Error(err);
+  }
 }
 
 
