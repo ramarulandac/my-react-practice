@@ -37,6 +37,7 @@ export default class PostDetail extends Component {
                     <p>Price:&nbsp;{postDetail.price}</p>
                     <p>Type:&nbsp;{postDetail.type}</p>
                     <p>Date:&nbsp;{postDetail.createdAt}</p>
+                    <p>Tag:&nbsp;{postDetail.tags}</p>
                 </div>
             </div>
         )

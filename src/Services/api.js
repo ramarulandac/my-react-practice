@@ -57,16 +57,21 @@ export const getPosts = async (params) => {
 
     
     const queryparams = Object.keys(params)
-    const pathQuery = queryparams.filter(element => (params[element]!==''))
+    const pathQuery = queryparams.filter(element => (params[element]!=='') && !element.includes('Price'))
                                             .map((filter,y) =>  { return (y===0)?
                                                         `${filter.toLowerCase()}=${params[filter]}`:
-                                                        `&${filter.toLowerCase()}=${params[filter]}`})
-                                    .join('')
+                                                        `&${filter.toLowerCase()}=${params[filter]}`}).join('')    
+
     
-                                    console.log(pathQuery)
+    const pathPrice = `&price=${params['minPrice']}-${params['maxPrice']}`
+                                    
+                                    
+                                                        
+                                    
     try {
-        const endpoint = `${URL}/anuncios?${pathQuery}`;
-        const response = await fetch(endpoint, {
+        const endpoint = `${URL}/anuncios?${pathQuery}${pathPrice}`;
+        console.log(endpoint)
+        const response = await fetch(endpoint,{
             method:'GET',
             credentials: 'include'
         })        
@@ -101,15 +106,10 @@ export const getPost = async (id) => {
 
 export const getUpdate= async (id,post) => {    
 
-    const {name, price, description,foto,venta} = post
+    const {name, price, description,foto,venta, tag} = post
     
     try {
         const endpoint = `${URL}/anuncios?id=${id}`;
-        console.log(name)
-        console.log(price)
-        console.log(description)
-        console.log(foto)
-        console.log(venta)
         const response = await fetch (endpoint, {
             method: 'POST',
             body: JSON.stringify({
@@ -117,7 +117,8 @@ export const getUpdate= async (id,post) => {
                 'price': price,
                 'description':description,
                 'type':venta,
-                'photo':foto
+                'photo':foto,
+                'tag':tag
             }),
             headers: {
                 'content-type': 'application/json'
@@ -134,7 +135,7 @@ export const getUpdate= async (id,post) => {
 
 export const getNew = async(post) => {
 
-    const {name,price,description,venta,foto} = post
+    const {name,price,description,venta,foto,tag} = post
     
     try {
         const endpoint = `${URL}/anuncios`;
@@ -145,7 +146,8 @@ export const getNew = async(post) => {
                                                     'price': price,
                                                     'description':description,
                                                     'type':venta,
-                                                    'photo':foto
+                                                    'photo':foto,
+                                                    'tag':tag
                                                 }),
                                                 headers: {
                                                     'content-type': 'application/json'

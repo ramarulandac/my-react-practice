@@ -12,15 +12,15 @@ export default class newPost extends Component {
             foto:'',
             description:'',
             price:'',
-            venta: 'sell'
+            venta: 'sell',
+            tags:''
         }
     }
 
 
     handleSubmit = async (evt) => {        
         evt.preventDefault();
-        const post = this.state
-        console.log(this.props)  
+        const post = this.state       
       
         const data = await getNew(post)
         if(data.success){
@@ -31,7 +31,7 @@ export default class newPost extends Component {
     handleInput = (evt) => {
         const value = evt.target.value       
         const name = evt.target.name;    
-        console.log(value)
+        
         this.setState({
             [name]:value
         })
@@ -57,6 +57,8 @@ export default class newPost extends Component {
                     <option value='sell' selected="selected">Sale</option>                                                   
                     <option value='buy'>Buy</option>
                 </select><br/>    
+                <label for="tag">Tag</label>
+                <input id="tag" name="tags" type="text" onChange={this.handleInput} placeholder="add Tag" /><br/>
                 <button type="Submit" value="Submit">Crear</button>
             </form>            
         </div>

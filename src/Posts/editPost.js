@@ -14,15 +14,16 @@ export default class newPost extends Component {
             foto:'',
             description:'',
             price:'',
-            venta:'sell'            
+            venta:'sell',
+            tags:''            
         }
     }
     
     componentDidMount = async () => {
         const {id} = this.state        
         const data = await getPost(id)
-        console.log(data.result)
-        const {name, photo, description, price, type} = data.result
+        const {name, photo, description, price, type, tags} = data.result
+       
         if(data.success){
             this.setState({
                 postDetail:data.result,
@@ -30,7 +31,8 @@ export default class newPost extends Component {
                 foto:photo,
                 description:description,
                 price:price,
-                venta:type
+                venta:type,
+                tags:tags
             })
         }
 
@@ -39,12 +41,13 @@ export default class newPost extends Component {
     handleSubmit = async (evt) => {        
         
         evt.preventDefault();
-        const {name, foto, description, price, venta, id} = this.state           
+        const {name, foto, description, price, venta, id, tags} = this.state           
         const data= await getUpdate(id, {name:name,
                                          foto:foto,
                                          description:description,
                                          price:price,
-                                         venta:venta})
+                                         venta:venta,
+                                         tags:tags })
         if(data.success){
             this.props.history.push('/anuncios')        
         } else {
@@ -55,7 +58,7 @@ export default class newPost extends Component {
     handleInput = (evt) => {
         const value = evt.target.value       
         const name = evt.target.name;    
-        console.log(value)
+        
         this.setState({
             [name]:value            
         })
@@ -66,7 +69,7 @@ export default class newPost extends Component {
         return (
             <div class="container">
             <Link to="/anuncios">Back</Link>
-            <h1>New Article</h1>
+            <h1>Update Article</h1>
             <form onSubmit={this.handleSubmit}>
                 <label for="name">Name</label>
                 <input id="name"
@@ -105,7 +108,8 @@ export default class newPost extends Component {
                         <option value='sell' selected="selected">Sale</option>                                                   
                         <option value='buy'>Buy</option>
                 </select><br/> 
-
+                <label for="tag">Tag</label>
+                <input id="tag" name="tags" type="text" onChange={this.handleInput} placeholder="add Tag" /><br/>
                 <button type="Submit" value="Submit">Update</button>
             </form>            
         </div>

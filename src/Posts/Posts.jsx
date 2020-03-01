@@ -12,8 +12,9 @@ export default class Posts extends Component {
             queryFilters:[],
             filters:{
                     name:'',
-                    price:0,
-                    tag:'',
+                    minPrice:1,
+                    maxPrice:5000,
+                    tag:[],
                     venta:'true'                    
                 },
             value:null,
@@ -37,7 +38,7 @@ export default class Posts extends Component {
         const filters = this.state.filters
         evt.preventDefault();
         const posts = await getPosts(filters);
-        console.log(posts)
+        console.log(posts.results)
         if(posts.success){
             this.setState({
                 posts:posts.results
@@ -50,11 +51,13 @@ export default class Posts extends Component {
     handleInput = (evt) => {
         const value = evt.target.value       
         const name = evt.target.name;    
-        console.log(name)
+        
         this.setState({
             filters: {...this.state.filters, [name]:value}
         })
     }
+
+    
 
     render(){
         const {reset,filters,posts } = this.state
@@ -64,8 +67,11 @@ export default class Posts extends Component {
                 <form onSubmit={this.handleSubmit}>
                          <label for="Name">Name&nbsp;</label>
                          <input type="text" placeholder="article" value={filters.name} name="name" id="Name" onChange={this.handleInput}/><br/>
-                         <label type="number" for="Price">Price &nbsp;</label>
-                         <input placeholder="how much would yo pay" value={filters.price} name="price" id="Price" onChange={this.handleInput}/><br/>
+                         <label type="number" for="minPrice">Price from &nbsp;</label>
+                         <input placeholder="min price" value={filters.minPrice} name="minPrice" id="minPrice" onChange={this.handleInput}/>
+                         <label type="number" for="maxPrice">to &nbsp;</label>
+                         <input placeholder="max price" value={filters.maxPrice} name="maxPrice" id="maxPrice" onChange={this.handleInput}/>
+                         <br/>
                          <label for="Tag">Tag &nbsp;&nbsp;&nbsp;&nbsp;</label>
                          <input placeholder="Look for tag" name="tag" id="Tag" onChange={this.handleInput}/><br/>
                          <label for="Sale">Sale or buy &nbsp;</label> 

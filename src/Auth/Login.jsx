@@ -32,12 +32,11 @@ class Login extends Component {
         const {username, password} = this.state
         const response = await Start(username, password)
 
-        if(response.success){
-            console.log(response)
+        if(response.success){            
             this.props.history.push('/anuncios');
         }         
          else { 
-            console.log(response) 
+            
             this.setState({
                 registered:false,
                 error: response.error,
