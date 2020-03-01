@@ -14,7 +14,7 @@ export default class Posts extends Component {
                     name:'',
                     price:0,
                     tag:'',
-                    venta:'sell'                    
+                    venta:'true'                    
                 },
             value:null,
             reset:0            
@@ -70,8 +70,8 @@ export default class Posts extends Component {
                          <input placeholder="Look for tag" name="tag" id="Tag" onChange={this.handleInput}/><br/>
                          <label for="Sale">Sale or buy &nbsp;</label> 
                         <select name="venta" id="Sale" onChange={this.handleInput}>                         
-                            <option value='sell' selected="selected">Sale</option>                                                   
-                            <option value='buy'>Buy</option>
+                            <option value='true' selected="selected">Sale</option>                                                   
+                            <option value='false'>Buy</option>
                         </select><br/>                     
                     <button type="Submit" value="Submit">Search</button>
                 </form> 
@@ -79,6 +79,7 @@ export default class Posts extends Component {
             <div className="posts">
                 <br/>
                 {(posts.length === 0 )?'':<h4>Found {posts.length}</h4>}
+                <hr></hr>
                 <PostList anuncios={posts}></PostList>
             </div>
         </div>

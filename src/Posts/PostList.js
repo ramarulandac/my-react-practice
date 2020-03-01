@@ -16,6 +16,7 @@ export default class PostList extends Component {
                <hr></hr>
                {(anuncios)? anuncios.map(post => 
                                 { return  <div>
+                                             <hr></hr>
                                             <div key = {post._id} className="post">
                                                 <Link to={`/anuncios/${post._id}`}>
                                                     <img src={`${post.photo}`} 

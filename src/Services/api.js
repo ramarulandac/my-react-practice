@@ -96,7 +96,41 @@ export const getPost = async (id) => {
     }
 }
 
-     
+
+
+
+export const getUpdate= async (id,post) => {    
+
+    const {name, price, description,foto,venta} = post
+    
+    try {
+        const endpoint = `${URL}/anuncios?id=${id}`;
+        console.log(name)
+        console.log(price)
+        console.log(description)
+        console.log(foto)
+        console.log(venta)
+        const response = await fetch (endpoint, {
+            method: 'POST',
+            body: JSON.stringify({
+                'name': name,
+                'price': price,
+                'description':description,
+                'type':venta,
+                'photo':foto
+            }),
+            headers: {
+                'content-type': 'application/json'
+            },
+            credentials:'include'}); 
+        
+        return await response.json();      
+
+    } catch(err){
+        console.log(`Error fetching request..`)
+        throw new Error(err);
+    }
+}
 
 export const getNew = async(post) => {
 
@@ -116,9 +150,7 @@ export const getNew = async(post) => {
                                                 headers: {
                                                     'content-type': 'application/json'
                                                 },
-                                                credentials:'include'
-    });
-    
+                                                credentials:'include'});    
     return await response.json();    
    
 

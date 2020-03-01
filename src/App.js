@@ -6,7 +6,7 @@ import Posts from './Posts/Posts'
 import PostDetail from './Posts/PostDetail'
 import NewPost from './Posts/newPost'
 import EditPost from './Posts/editPost'
-import {BrowserRouter as Router, Switch,Route,Link, Redirect} from "react-router-dom";
+import {BrowserRouter as Router,Switch,Route,Link,Redirect} from "react-router-dom";
 
 function App() {
   return (
